@@ -1,69 +1,179 @@
-import Image from "next/image";
+import { site, services, about } from "@/content/site";
+import { projects, experience } from "@/content/projects";
+import { ProjectCard } from "@/components/ProjectCard";
+import { Section } from "@/components/Section";
+import { Chip } from "@/components/Chip";
+import { CopyEmailButton } from "@/components/CopyEmailButton";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <>
+      {/* Hero */}
+      <section aria-label="Introduction" className="py-20 sm:py-28">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted">
+            <span
+              className="h-2 w-2 rounded-full bg-accent"
+              aria-hidden="true"
+            />
+            {site.availability}
+          </p>
+          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+            {site.name}
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+          <p className="mt-3 text-lg font-medium text-accent sm:text-xl">
+            {site.role} — {site.niche}
+          </p>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+            {site.tagline} Currently building B2B IoT products at{" "}
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href={experience.companyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground underline decoration-accent underline-offset-4 hover:text-accent"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
+              Spiio
+            </a>
+            .
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href={`mailto:${site.email}?subject=Project%20inquiry`}
+              className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-contrast transition-opacity hover:opacity-90"
             >
-              Learning
-            </a>{" "}
-            center.
+              Hire me for a project
+            </a>
+            <a
+              href="#projects"
+              className="rounded-md border border-border px-5 py-2.5 text-sm font-semibold transition-colors hover:border-muted"
+            >
+              View my work
+            </a>
+          </div>
+          <p className="mt-6 flex flex-wrap gap-5 text-sm text-muted">
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-foreground"
+            >
+              GitHub ↗
+            </a>
+            {site.linkedin && (
+              <a
+                href={site.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-foreground"
+              >
+                LinkedIn ↗
+              </a>
+            )}
+            {site.resumeUrl && (
+              <a
+                href={site.resumeUrl}
+                className="transition-colors hover:text-foreground"
+              >
+                Resume (PDF) ↗
+              </a>
+            )}
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Projects */}
+      <Section id="projects" title="Selected Projects">
+        <div className="grid gap-8 md:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
         </div>
-      </main>
-    </div>
+      </Section>
+
+      {/* Experience */}
+      <Section id="experience" title="Experience">
+        <article className="rounded-xl border border-border bg-card p-6 sm:p-8">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h3 className="text-xl font-semibold">
+              {experience.title} ·{" "}
+              <a
+                href={experience.companyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                {experience.company}
+              </a>
+            </h3>
+            <p className="font-mono text-xs text-muted">{experience.period}</p>
+          </div>
+          <p className="mt-4 leading-relaxed text-muted">{experience.intro}</p>
+          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted">
+            {experience.bullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
+          <ul
+            className="mt-6 flex flex-wrap gap-2"
+            aria-label="Technologies used at Spiio"
+          >
+            {experience.stack.map((tech) => (
+              <li key={tech}>
+                <Chip label={tech} />
+              </li>
+            ))}
+          </ul>
+        </article>
+      </Section>
+
+      {/* About */}
+      <Section id="about" title="About">
+        <div className="max-w-2xl space-y-4 leading-relaxed text-muted">
+          {about.map((paragraph) => (
+            <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+          ))}
+        </div>
+      </Section>
+
+      {/* Services */}
+      <Section id="services" title="How I Can Help">
+        <div className="grid gap-4 sm:grid-cols-2">
+          {services.map((service) => (
+            <div
+              key={service.title}
+              className="rounded-xl border border-border bg-card p-5"
+            >
+              <h3 className="font-semibold">{service.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {service.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Contact */}
+      <Section id="contact" title="Contact">
+        <div className="max-w-2xl">
+          <h3 className="text-2xl font-semibold sm:text-3xl">
+            Have a project or a role in mind?
+          </h3>
+          <p className="mt-4 leading-relaxed text-muted">
+            The best way to reach me is email — I reply within a day. Whether
+            it&apos;s a freelance dashboard build or a full-time role, I&apos;d
+            love to hear about it.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <a
+              href={`mailto:${site.email}`}
+              className="font-mono text-base text-accent hover:underline sm:text-lg"
+            >
+              {site.email}
+            </a>
+            <CopyEmailButton email={site.email} />
+          </div>
+        </div>
+      </Section>
+    </>
   );
 }

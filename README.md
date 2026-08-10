@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# judemusyoki.com — Portfolio
 
-## Getting Started
+Personal portfolio site for Jude Musyoki — data-heavy dashboards & geospatial visualization.
 
-First, run the development server:
+Built with Next.js (App Router), TypeScript, and Tailwind CSS. Fully static, dark-mode default.
+
+## Develop
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+All copy lives in typed content objects — no CMS:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `content/site.ts` — name, email, links, availability, about, services
+- `content/projects.ts` — case studies (problem → role → decisions → outcomes) and Spiio experience
 
-## Learn More
+Screenshots live in `public/images/<project>/` as WebP.
 
-To learn more about Next.js, take a look at the following resources:
+## Before launch (TODOs)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [ ] Add `public/resume.pdf` and set `resumeUrl` in `content/site.ts`
+- [ ] Set `linkedin` in `content/site.ts`
+- [ ] Confirm job title/dates in `content/projects.ts` (`experience`)
+- [ ] Deploy SmartBin to Vercel and set its `links.demo` in `content/projects.ts`
+- [ ] Capture Nairobi Dashboard screenshots (authenticated, local) into `public/images/nairobi/` and list them in `content/projects.ts`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy (Vercel free tier)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push to GitHub.
+2. vercel.com → Add New Project → import the repo (framework auto-detected).
+3. Set env var `NEXT_PUBLIC_SITE_URL` to the production URL (e.g. `https://judemusyoki.vercel.app`).
+4. Later: add a custom domain in Vercel → update `NEXT_PUBLIC_SITE_URL`.
