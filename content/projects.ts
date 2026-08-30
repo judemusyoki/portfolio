@@ -21,6 +21,101 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "chanzo",
+    title: "Chanzo — EUDR coffee traceability",
+    tagline:
+      "From a farmer's GPS point to an importer-ready due diligence file — with every decision on the record.",
+    summary:
+      "An EUDR compliance chain for Kenyan coffee cooperatives and their exporters: 3,500 smallholder plots screened against satellite forest data (FAO Whisp on Google Earth Engine), cherry deliveries tracked through factory lots into export consignments, a review queue where a person clears or excludes every flagged plot with a reason, and a one-click evidence pack — EU-format geolocation file, due diligence statement, hashed manifest — for the importer to file. Synthetic data with five seeded fraud patterns, all of them caught.",
+    problem: [
+      "From 30 December 2026 the EU will not accept coffee unless the importer can show, plot by plot, that it was not grown on land deforested after 2020. Kenya sends roughly 58% of its coffee to the EU, and it comes from hundreds of thousands of smallholders through cooperative wet mills. Mapping the plots is the easy half — Kenya's coffee authority is already doing it with Kobo Collect, and free field apps abound.",
+      "The hard half sits with the exporter: turning thousands of GPS points into a defensible file. Which plots does this container actually contain? Which ones did the satellite flag, who looked at them, what did they decide and why? If a plot is excluded, how much coffee drops out of the declaration? Chanzo is the exporter-side chain — custody, review, evidence, statement — built to production standards on synthetic data.",
+    ],
+    role: [
+      "Solo project — regulatory research (the Commission's FAQ, guidance and GeoJSON spec, verified against the texts and pinned in the repo), data model, synthetic-data generator, screening pipeline, web back office, compliance export. Built in phases with a written plan and a progress diary; every design decision recorded with its reason.",
+    ],
+    decisions: [
+      {
+        heading: "Real satellite screening, not a mock",
+        body: "Each plot is screened with FAO's Whisp on Google Earth Engine — the same open tool the FAO used in its Kenyan pilots. Points are buffered to the plot's declared area before screening (Whisp does not do this for you), the result is stored with the Whisp version and dataset versions it was computed against, and it is labelled in the UI as a due-diligence input, never a certificate. A nightly GitHub Actions job re-screens what has gone stale.",
+      },
+      {
+        heading: "A synthetic cooperative with the fraud built in",
+        body: "No real farmer data exists in the system. A deterministic generator places eight factories on real Nyeri cropland, 3,077 farmers and 3,501 plots, a season of deliveries — and five seeded failure patterns: plots on real post-2020 forest-loss pixels, duplicate farmer registrations, GPS fixes taken under canopy, one plot claimed by two members, and farmers delivering more cherry than their land could grow. The seeded labels are the acceptance test: the checks find 100% of four patterns and 11 of 12 forest-loss plots (the twelfth is a 0.14 ha plot the satellite honestly rates low).",
+      },
+      {
+        heading: "Flags block; people decide",
+        body: "No plot is ever excluded by software. A flag turns the plot 'pending' and blocks its coffee from any consignment. A clerk works a master–detail queue — evidence in one plain-English sentence, the map, the history — and clears or excludes with a required reason. Every decision keeps the actor, time and reason on the flag; if a later check finds the same condition, the flag re-opens and shows the earlier decision.",
+      },
+      {
+        heading: "Custody as the source of truth for weight",
+        body: "Deliveries at the factory gate go into lots (a processing batch: cherry in, parchment out), lots go into consignments. Every number on a consignment — plots, farmers, cherry, parchment, green, and the 'claimable' green after exclusions — is derived from that chain, so a plot excluded in the review queue reduces the declarable weight of the shipment by exactly its share.",
+      },
+      {
+        heading: "Evidence that cannot quietly change",
+        body: "Submitting a consignment freezes a numbered version: the cleared plots with their geometry, the screening result each one had, every decision, the weights. Later changes create version 2; version 1 is kept. The evidence pack is a ZIP with the EU Information System GeoJSON (spec v1.5: six-decimal points, Area always set, validated), the Annex II due diligence statement as PDF and JSON, CSVs of plots, exclusions and decisions, and a manifest of SHA-256 hashes stored on first generation and re-checked on every later download.",
+      },
+      {
+        heading: "Read the regulation, then correct the brief",
+        body: "The project brief assumed polygons for every plot and a 500-plot cap per file. The texts say otherwise: plots up to 4 ha may be a single point (so the field capture defaults to one GPS fix), and the '500' is a limit on scientific-name lines, not plots. Both findings changed the design and are pinned with sources in the repo.",
+      },
+    ],
+    outcomes: [
+      "3,501 plots screened end to end on Google Earth Engine in about four minutes per full run",
+      "5 seeded fraud patterns: 100% recall on four, 11/12 on satellite forest loss — scored automatically against the generator's labels",
+      "Consignment page: plots · cleared · pending · excluded, each line traceable to a named farmer and a timestamp; claimable weight recomputed as decisions land",
+      "One-click evidence pack: EU-format GeoJSON, DDS draft (PDF + JSON), decisions CSV, hashed manifest; frozen, numbered versions",
+      "Full chain in the UI: record a delivery → open and close a lot → assemble a consignment → review → submit → ship, every step audited",
+      "Nightly automation on three free tiers: Whisp screening (GitHub Actions), spatial checks (Cloudflare Worker), app on Vercel",
+    ],
+    stack: [
+      "Next.js 15 (App Router, Server Components)",
+      "TypeScript (strict)",
+      "MUI 7 + MUI X DataGrid",
+      "Leaflet + marker clustering",
+      "Supabase Postgres + PostGIS",
+      "Drizzle ORM",
+      "Cloudflare Workers (cron)",
+      "Python · openforis-whisp · Google Earth Engine",
+      "GitHub Actions",
+      "@react-pdf/renderer, Zod, Vitest, pytest",
+    ],
+    links: {
+      repo: "https://github.com/judemusyoki/chanzo",
+      demo: "https://chanzo-w8ad-chi.vercel.app",
+      demoNote:
+        "All data is synthetic; the demo runs without login as a seeded clerk and exporter officer.",
+    },
+    images: [
+      {
+        src: "/images/chanzo/consignment.webp",
+        alt: "Chanzo consignment page: lifecycle stepper, readiness tiles for plots cleared, pending and excluded, and the pending-plot table",
+        caption:
+          "The hero screen — every plot in the shipment in one of three buckets; only cleared plots are declared.",
+      },
+      {
+        src: "/images/chanzo/review.webp",
+        alt: "Chanzo review queue: list of flagged plots on the left, the selected plot's evidence, map and decision buttons on the right",
+        caption: "Review queue — evidence in plain English, a required reason on every decision.",
+      },
+      {
+        src: "/images/chanzo/dashboard.webp",
+        alt: "Chanzo dashboard: factory list with status counts beside a clustered map of 3,501 plots centred on the exporter's office in Nyeri",
+        caption: "Dashboard — 3,501 synthetic plots on real Nyeri cropland, clustered by status.",
+      },
+      {
+        src: "/images/chanzo/lot.webp",
+        alt: "Chanzo lot page: deliveries in a factory processing batch with cherry, parchment and outturn figures",
+        caption: "Custody — deliveries into a lot, parchment weighed at close, then into a consignment.",
+      },
+      {
+        src: "/images/chanzo/deliveries.webp",
+        alt: "Chanzo deliveries ledger: factory-gate weighings with member, plot status, weight and lot",
+        caption: "Deliveries ledger — the factory gate, where traceability starts.",
+      },
+    ],
+  },
+  {
     slug: "smartbin",
     title: "SmartBin — Waste Collection Operations",
     tagline: "Live waste-collection operations for two cities — with zero backend.",
