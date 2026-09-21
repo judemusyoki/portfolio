@@ -15,7 +15,7 @@ npm run dev
 All copy lives in typed content objects — no CMS:
 
 - `content/site.ts` — name, email, links, availability, about, services
-- `content/projects.ts` — case studies (problem → role → decisions → outcomes) and Spiio experience
+- `content/projects.ts` — case studies (problem → role → decisions → outcomes) and work experience (Spiio, Acter, WasteHero)
 
 Screenshots live in `public/images/<project>/` as WebP.
 
@@ -23,9 +23,12 @@ Screenshots live in `public/images/<project>/` as WebP.
 
 - [ ] Add `public/resume.pdf` and set `resumeUrl` in `content/site.ts`
 - [ ] Set `linkedin` in `content/site.ts`
-- [ ] Confirm job title/dates in `content/projects.ts` (`experience`)
+- [ ] Confirm Spiio job title/start date in `content/projects.ts` (`experience`)
+- [ ] Add the Acter company URL in `content/projects.ts`, or leave it unlinked
 - [ ] Deploy SmartBin to Vercel and set its `links.demo` in `content/projects.ts`
 - [ ] Capture Nairobi Dashboard screenshots (authenticated, local) into `public/images/nairobi/` and list them in `content/projects.ts`
+
+See [ROADMAP.md](ROADMAP.md) for the post-launch work that should make the site convert better (social proof, outcomes on cards, services with a process).
 
 ## Deploy (Vercel free tier)
 
