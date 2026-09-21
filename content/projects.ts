@@ -14,7 +14,7 @@ export interface Project {
   decisions: { heading: string; body: string }[];
   outcomes: string[];
   stack: string[];
-  links: { demo?: string; repo?: string; demoNote?: string };
+  links: { demo?: string; demoNote?: string };
   images: ProjectImage[];
   cardImage?: ProjectImage;
 }
@@ -32,7 +32,7 @@ export const projects: Project[] = [
       "The hard half sits with the exporter: turning thousands of GPS points into a defensible file. Which plots does this container actually contain? Which ones did the satellite flag, who looked at them, what did they decide and why? If a plot is excluded, how much coffee drops out of the declaration? Chanzo is the exporter-side chain — custody, review, evidence, statement — built to production standards on synthetic data.",
     ],
     role: [
-      "Solo project — regulatory research (the Commission's FAQ, guidance and GeoJSON spec, verified against the texts and pinned in the repo), data model, synthetic-data generator, screening pipeline, web back office, compliance export. Built in phases with a written plan and a progress diary; every design decision recorded with its reason.",
+      "Solo project — regulatory research (the Commission's FAQ, guidance and GeoJSON spec, verified against the source texts), data model, synthetic-data generator, screening pipeline, web back office, compliance export. Built in phases with a written plan and a progress diary; every design decision recorded with its reason.",
     ],
     decisions: [
       {
@@ -57,7 +57,7 @@ export const projects: Project[] = [
       },
       {
         heading: "Read the regulation, then correct the brief",
-        body: "The project brief assumed polygons for every plot and a 500-plot cap per file. The texts say otherwise: plots up to 4 ha may be a single point (so the field capture defaults to one GPS fix), and the '500' is a limit on scientific-name lines, not plots. Both findings changed the design and are pinned with sources in the repo.",
+        body: "The project brief assumed polygons for every plot and a 500-plot cap per file. The texts say otherwise: plots up to 4 ha may be a single point (so the field capture defaults to one GPS fix), and the '500' is a limit on scientific-name lines, not plots. Both findings changed the design and are documented with their sources.",
       },
     ],
     outcomes: [
@@ -81,7 +81,6 @@ export const projects: Project[] = [
       "@react-pdf/renderer, Zod, Vitest, pytest",
     ],
     links: {
-      repo: "https://github.com/judemusyoki/chanzo",
       demo: "https://chanzo-w8ad-chi.vercel.app",
       demoNote:
         "All data is synthetic; the demo runs without login as a seeded clerk and exporter officer.",
@@ -167,7 +166,6 @@ export const projects: Project[] = [
       "Vitest",
     ],
     links: {
-      repo: "https://github.com/judemusyoki/bin-ops",
       // TODO: set once deployed to Vercel, e.g. https://smartbin-ops.vercel.app
       demo: undefined,
     },
@@ -248,7 +246,6 @@ export const projects: Project[] = [
       "NestJS API on Railway",
     ],
     links: {
-      repo: "https://github.com/judemusyoki/nairobi-dashboard-web",
       demoNote: "Private demo available on request — happy to do a walkthrough call.",
     },
     images: [
@@ -258,28 +255,91 @@ export const projects: Project[] = [
   },
 ];
 
-export const experience = {
-  company: "Spiio",
-  companyUrl: "https://greencastconnect.com/",
-  // TODO: confirm exact title and start date.
-  title: "Software Engineer",
-  period: "Present",
-  intro:
-    "I work on GreenCast Connect Desktop, a commercial B2B IoT platform that turns environmental sensor data into agronomic insights for golf courses and grounds teams.",
-  bullets: [
-    "Build features across the platform's data-heavy surfaces: the sensor map, data explorer, growing-degree-day tracking, and alerting.",
-    "Ship in a production codebase serving customers in 5 languages, with Auth0, Sentry monitoring, and a Vitest + Playwright test suite.",
-    "Same domain as my personal projects — live sensor data, maps, and charts — but at commercial scale on Vercel.",
-  ],
-  stack: [
-    "Next.js 14",
-    "TypeScript",
-    "MUI",
-    "Apache ECharts",
-    "Google Maps",
-    "Auth0",
-    "next-intl (5 locales)",
-    "Sentry",
-    "Vitest + Playwright",
-  ],
-};
+export interface Experience {
+  company: string;
+  companyUrl?: string;
+  title: string;
+  period: string;
+  intro: string;
+  bullets: string[];
+  stack: string[];
+}
+
+/** Most recent first. The first entry is treated as the current role. */
+export const experience: Experience[] = [
+  {
+    company: "Spiio",
+    companyUrl: "https://greencastconnect.com/",
+    // TODO: confirm exact title and start date.
+    title: "Software Engineer",
+    period: "Present",
+    intro:
+      "I work on GreenCast Connect Desktop, a commercial B2B IoT platform that turns environmental sensor data into agronomic insights for golf courses and grounds teams.",
+    bullets: [
+      "Build features across the platform's data-heavy surfaces: the sensor map, data explorer, growing-degree-day tracking, and alerting.",
+      "Ship in a production codebase serving customers in 5 languages, with Auth0, Sentry monitoring, and a Vitest + Playwright test suite.",
+      "Same domain as my personal projects — live sensor data, maps, and charts — but at commercial scale on Vercel.",
+    ],
+    stack: [
+      "Next.js 14",
+      "TypeScript",
+      "MUI",
+      "Apache ECharts",
+      "Google Maps",
+      "Auth0",
+      "next-intl (5 locales)",
+      "Sentry",
+      "Vitest + Playwright",
+    ],
+  },
+  {
+    company: "Acter",
+    // TODO: add the Acter website URL if you want the company name linked.
+    companyUrl: undefined,
+    title: "Full Stack Developer",
+    period: "Apr 2021 – Dec 2022",
+    intro:
+      "A web platform that helps organisations network, communicate and coordinate. I worked across the stack, from the Next.js front end to the GraphQL API and database layer.",
+    bullets: [
+      "Built and optimised UI components in TypeScript, Next.js and Material-UI — the same front-end stack I work in today at Spiio.",
+      "Developed and tuned the backend: a GraphQL server with a URQL client and Prisma ORM on PostgreSQL.",
+      "Implemented Auth0 authentication and wrote Jest test suites; documented components in Storybook.",
+    ],
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Material-UI",
+      "GraphQL",
+      "URQL",
+      "Prisma",
+      "PostgreSQL",
+      "Auth0",
+      "Jest",
+      "Storybook",
+    ],
+  },
+  {
+    company: "WasteHero",
+    companyUrl: "https://wastehero.io/",
+    title: "Frontend Developer Intern",
+    period: "Jun 2020 – Nov 2020",
+    intro:
+      "A smart waste-management platform: the same problem space as my SmartBin project, on a commercial product with real customers.",
+    bullets: [
+      "Shipped new features in React and TypeScript, working with Apollo Client, GraphQL, Material UI and Redux.",
+      "Worked with the Google Maps API — my first map-heavy product interface, and the start of a thread that runs through everything I've built since.",
+      "Implemented scalable features to improve the user experience; finished with a recommendation letter and certificate of internship.",
+    ],
+    stack: [
+      "React",
+      "TypeScript",
+      "Apollo Client",
+      "GraphQL",
+      "Material UI",
+      "Redux",
+      "Google Maps API",
+    ],
+  },
+];
+
+export const currentRole = experience[0];

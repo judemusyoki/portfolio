@@ -3,7 +3,14 @@ import Link from "next/link";
 import type { Project } from "@/content/projects";
 import { Chip } from "@/components/Chip";
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({
+  project,
+  eager = false,
+}: {
+  project: Project;
+  /** Load the card image immediately. Use for cards above the fold (LCP candidates). */
+  eager?: boolean;
+}) {
   const image = project.cardImage ?? project.images[0];
   return (
     <article className="overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-muted">
@@ -14,6 +21,7 @@ export function ProjectCard({ project }: { project: Project }) {
             alt={image.alt}
             width={1600}
             height={1000}
+            loading={eager ? "eager" : "lazy"}
             className="border-b border-border"
           />
         </Link>
@@ -50,16 +58,6 @@ export function ProjectCard({ project }: { project: Project }) {
               className="text-muted transition-colors hover:text-foreground"
             >
               Live demo ↗
-            </a>
-          )}
-          {project.links.repo && (
-            <a
-              href={project.links.repo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted transition-colors hover:text-foreground"
-            >
-              GitHub ↗
             </a>
           )}
         </p>

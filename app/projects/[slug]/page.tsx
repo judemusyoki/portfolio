@@ -29,7 +29,7 @@ export async function generateMetadata({
 function ProjectLinks({
   links,
 }: {
-  links: { demo?: string; repo?: string; demoNote?: string };
+  links: { demo?: string; demoNote?: string };
 }) {
   return (
     <p className="flex flex-wrap items-center gap-4 text-sm font-medium">
@@ -41,16 +41,6 @@ function ProjectLinks({
           className="rounded-md bg-accent px-4 py-2 font-semibold text-accent-contrast transition-opacity hover:opacity-90"
         >
           Live demo ↗
-        </a>
-      )}
-      {links.repo && (
-        <a
-          href={links.repo}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-md border border-border px-4 py-2 font-semibold transition-colors hover:border-muted"
-        >
-          View on GitHub ↗
         </a>
       )}
       {links.demoNote && <span className="text-muted">{links.demoNote}</span>}
@@ -100,7 +90,7 @@ export default async function ProjectPage({
             alt={project.images[0].alt}
             width={1600}
             height={1000}
-            priority
+            loading="eager"
             className="rounded-xl border border-border"
           />
           {project.images[0].caption && (

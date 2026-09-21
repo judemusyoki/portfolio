@@ -1,5 +1,5 @@
 import { site, services, about } from "@/content/site";
-import { projects, experience } from "@/content/projects";
+import { projects, experience, currentRole } from "@/content/projects";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Section } from "@/components/Section";
 import { Chip } from "@/components/Chip";
@@ -27,12 +27,12 @@ export default function Home() {
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
             {site.tagline} Currently building B2B IoT products at{" "}
             <a
-              href={experience.companyUrl}
+              href={currentRole.companyUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-foreground underline decoration-accent underline-offset-4 hover:text-accent"
             >
-              Spiio
+              {currentRole.company}
             </a>
             .
           </p>
@@ -84,46 +84,61 @@ export default function Home() {
       {/* Projects */}
       <Section id="projects" title="Selected Projects">
         <div className="grid gap-8 md:grid-cols-2">
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.slug}
+              project={project}
+              eager={index < 2}
+            />
           ))}
         </div>
       </Section>
 
       {/* Experience */}
       <Section id="experience" title="Experience">
-        <article className="rounded-xl border border-border bg-card p-6 sm:p-8">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h3 className="text-xl font-semibold">
-              {experience.title} ·{" "}
-              <a
-                href={experience.companyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent hover:underline"
+        <div className="space-y-6">
+          {experience.map((role) => (
+            <article
+              key={`${role.company}-${role.period}`}
+              className="rounded-xl border border-border bg-card p-6 sm:p-8"
+            >
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 className="text-xl font-semibold">
+                  {role.title} ·{" "}
+                  {role.companyUrl ? (
+                    <a
+                      href={role.companyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent hover:underline"
+                    >
+                      {role.company}
+                    </a>
+                  ) : (
+                    <span className="text-accent">{role.company}</span>
+                  )}
+                </h3>
+                <p className="font-mono text-xs text-muted">{role.period}</p>
+              </div>
+              <p className="mt-4 leading-relaxed text-muted">{role.intro}</p>
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted">
+                {role.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+              <ul
+                className="mt-6 flex flex-wrap gap-2"
+                aria-label={`Technologies used at ${role.company}`}
               >
-                {experience.company}
-              </a>
-            </h3>
-            <p className="font-mono text-xs text-muted">{experience.period}</p>
-          </div>
-          <p className="mt-4 leading-relaxed text-muted">{experience.intro}</p>
-          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted">
-            {experience.bullets.map((bullet) => (
-              <li key={bullet}>{bullet}</li>
-            ))}
-          </ul>
-          <ul
-            className="mt-6 flex flex-wrap gap-2"
-            aria-label="Technologies used at Spiio"
-          >
-            {experience.stack.map((tech) => (
-              <li key={tech}>
-                <Chip label={tech} />
-              </li>
-            ))}
-          </ul>
-        </article>
+                {role.stack.map((tech) => (
+                  <li key={tech}>
+                    <Chip label={tech} />
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
       </Section>
 
       {/* About */}
