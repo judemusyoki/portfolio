@@ -22,11 +22,11 @@ Ordered by expected impact. Items marked **needs Jude** require content or a dec
 
 ### 2. Outcomes on the project cards
 
-- [ ] Add one result line per card in `content/projects.ts` and render it in `components/ProjectCard.tsx`.
+- [x] Add one result line per card in `content/projects.ts` and render it in `components/ProjectCard.tsx`. (2026-09-22)
   - Chanzo: all five seeded fraud patterns caught (11 of 12 forest-loss plots).
   - SmartBin: collection distance cut by 30–50%.
   - Nairobi: response-time performance against SLA across 14 charts and a live map.
-- [ ] Repeat the same line at the top of each case-study page, above the fold.
+- [x] Repeat the same line at the top of each case-study page, above the fold. (2026-09-22)
 
 ### 3. Spiio as a case study — needs Jude
 
@@ -35,23 +35,23 @@ Ordered by expected impact. Items marked **needs Jude** require content or a dec
 
 ### 4. Nairobi card image
 
-- [ ] Capture a screenshot with synthetic or redacted data into `public/images/nairobi/` and list it in `content/projects.ts`. This is the only card without an image and is the weakest card visually. (Also listed under launch TODOs in the README.)
+- [x] Overview screenshot added 2026-09-22 (`public/images/nairobi/overview.webp`, account email masked). Gallery views for the case-study page are still open in the README launch list.
 
 ### 5. Human element — needs Jude
 
 - [ ] Add a photo to the About section.
-- [ ] State location and timezone (Aarhus, Denmark, CET).
+- [x] State location (hero line and About paragraph, 2026-09-22). Timezone not shown; add "CET" to the hero line if EU clients ask.
 - [ ] Add one personal line. Stand-up comedy on Sundays is a good candidate.
 
 ### 6. Services with a process
 
-- [ ] Reorder the services tiles in `content/site.ts` into a ladder: marketing site → dashboard or data product → full platform build → audit.
-- [ ] Add a short "how we'd work together" block with three or four steps: discovery call → scoped proposal → build in weekly increments → handover with docs.
-- [ ] Move the Services section above About in `app/page.tsx` so a client sees offers before biography.
+- [x] Reorder the services tiles in `content/site.ts` into a ladder: marketing site → dashboard or data product → full platform build → audit. (2026-09-22)
+- [x] Add a short "how we'd work together" block with three or four steps: discovery call → scoped proposal → build in weekly increments → handover with docs. (2026-09-22; no pricing mentioned by design — the proposal step lists milestones and deliverables instead)
+- [x] Move the Services section above About in `app/page.tsx` so a client sees offers before biography. (2026-09-22)
 
 ### 7. Site as evidence — optional, later
 
-- [ ] A small live chart or map in the hero, so the specialism is visible rather than stated.
+- [x] Hero visual beside the text on large screens (2026-09-22). Two variants exist: `components/HeroMap.tsx` (abstract street map with cluster bubbles) and `components/HeroPanel.tsx` (sparkline KPI tile). Pick one, or none, with `heroVisual` in `content/site.ts`; currently "map". Both are inline SVG, fixed data, CSS animation only, hidden below `lg` and from assistive tech.
 
 ## Open questions
 

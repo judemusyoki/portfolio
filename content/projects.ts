@@ -9,6 +9,8 @@ export interface Project {
   title: string;
   tagline: string;
   summary: string; // 2–3 sentences for the home-page card
+  /** One-line result, shown on the card and above the fold on the case study. */
+  outcome: string;
   problem: string[];
   role: string[];
   decisions: { heading: string; body: string }[];
@@ -23,6 +25,8 @@ export const projects: Project[] = [
   {
     slug: "chanzo",
     title: "Chanzo — EUDR coffee traceability",
+    outcome:
+      "All 5 seeded fraud patterns caught; 3,501 plots screened in about four minutes",
     tagline:
       "From a farmer's GPS point to an importer-ready due diligence file — with every decision on the record.",
     summary:
@@ -117,6 +121,8 @@ export const projects: Project[] = [
   {
     slug: "smartbin",
     title: "SmartBin — Waste Collection Operations",
+    outcome:
+      "30–50% less collection distance across ~250 bins in two cities, with zero backend",
     tagline: "Live waste-collection operations for two cities — with zero backend.",
     summary:
       "A smart-city dashboard tracking ~250 IoT bins across Nairobi and Copenhagen: a live fill-level map, two weeks of analytics, and a route planner that cuts collection distance by 30–50%. The whole thing runs on a deterministic clock-driven simulation — no backend, no database, yet every visitor sees the same live-ticking data.",
@@ -195,6 +201,8 @@ export const projects: Project[] = [
   {
     slug: "nairobi-incident-dashboard",
     title: "Nairobi Incident Dashboard",
+    outcome:
+      "Response-time SLA visibility per sub-county, from raw logs to a live map and analytics in English and Swahili",
     tagline:
       "Emergency-incident analytics for Nairobi's Fire & Rescue and disaster-risk teams.",
     summary:
@@ -249,8 +257,13 @@ export const projects: Project[] = [
       demoNote: "Private demo available on request — happy to do a walkthrough call.",
     },
     images: [
-      // TODO: capture authenticated screenshots locally (dashboard map, FRS SLA chart,
-      // data explorer, Swahili view) and list them here.
+      {
+        src: "/images/nairobi/overview.webp",
+        alt: "Nairobi Incident Dashboard: clustered Leaflet map of incidents across Nairobi County with KPI cards and a latest-incidents list in the sidebar",
+        caption:
+          "Overview — 80 incidents clustered on the map, headline KPIs, and the latest reports, with an ALL / FRS / DRR view switch.",
+      },
+      // TODO: add the FRS SLA chart, data explorer, and Swahili views.
     ],
   },
 ];

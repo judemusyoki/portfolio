@@ -42,6 +42,11 @@ const personJsonLd = {
   email: `mailto:${site.email}`,
   jobTitle: site.role,
   url: site.url,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Aarhus",
+    addressCountry: "DK",
+  },
   sameAs: [site.github, site.linkedin].filter(Boolean),
 };
 

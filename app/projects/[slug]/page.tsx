@@ -71,6 +71,12 @@ export default async function ProjectPage({
           {project.title}
         </h1>
         <p className="mt-3 text-lg text-accent">{project.tagline}</p>
+        <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-lg border border-accent/30 bg-accent-soft px-4 py-3 text-sm">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-accent">
+            Result
+          </span>
+          <span className="font-medium">{project.outcome}</span>
+        </p>
         <ul className="mt-6 flex flex-wrap gap-2" aria-label="Technologies used">
           {project.stack.map((tech) => (
             <li key={tech}>

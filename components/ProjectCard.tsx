@@ -35,6 +35,12 @@ export function ProjectCard({
             {project.title}
           </Link>
         </h3>
+        <p className="flex gap-3 text-sm leading-snug">
+          <span className="shrink-0 pt-0.5 font-mono text-[11px] uppercase tracking-widest text-accent">
+            Result
+          </span>
+          <span className="font-medium">{project.outcome}</span>
+        </p>
         <p className="text-sm leading-relaxed text-muted">{project.summary}</p>
         <ul className="flex flex-wrap gap-2" aria-label="Technologies used">
           {project.stack.slice(0, 5).map((tech) => (
