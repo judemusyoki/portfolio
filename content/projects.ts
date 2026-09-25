@@ -254,7 +254,9 @@ export const projects: Project[] = [
       "NestJS API on Railway",
     ],
     links: {
-      demoNote: "Private demo available on request — happy to do a walkthrough call.",
+      demo: "https://nairobi-dashboard-demo.vercel.app/try",
+      demoNote:
+        "Synthetic data that resets nightly. Pick a role on the Try page — DRR analyst or FRR officer — no account needed.",
     },
     images: [
       {
