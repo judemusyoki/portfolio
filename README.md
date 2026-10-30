@@ -1,6 +1,6 @@
 # judemusyoki.com — Portfolio
 
-Personal portfolio site for Jude Musyoki — data-heavy dashboards & geospatial visualization.
+Personal portfolio site for Jude Musyoki — senior frontend engineer for complex, data-driven products.
 
 Built with Next.js (App Router), TypeScript, and Tailwind CSS. Fully static, dark-mode default.
 
@@ -16,14 +16,15 @@ All copy lives in typed content objects — no CMS:
 
 - `content/site.ts` — name, email, links, availability, about, services
 - `content/skills.ts` — the grouped Toolkit section (chips per card)
-- `content/projects.ts` — case studies (problem → role → decisions → outcomes) and work experience (Spiio, Acter, WasteHero)
+- `content/projects.ts` — case studies (problem → role → decisions → outcomes) and work experience (Spiio, Acter, WasteHero, plus the 2013–2019 earlier career)
 
 Screenshots live in `public/images/<project>/` as WebP.
 
 ## Before launch (TODOs)
 
+- [ ] Contact form: create a Resend account, set `RESEND_API_KEY` (see `.env.example`) in Vercel. Until then the form tells visitors to email directly.
 - [ ] Add `public/resume.pdf` and set `resumeUrl` in `content/site.ts`
-- [ ] Confirm Spiio job title/start date in `content/projects.ts` (`experience`)
+- [x] Confirm Spiio job title/start date in `content/projects.ts` (`experience`): Senior Frontend Engineer, May 2023
 - [ ] Add the Acter company URL in `content/projects.ts`, or leave it unlinked
 - [ ] Deploy SmartBin to Vercel and set its `links.demo` in `content/projects.ts`
 - [x] Nairobi Dashboard overview screenshot in `public/images/nairobi/`

@@ -7,6 +7,10 @@ export interface ProjectImage {
 export interface Project {
   slug: string;
   title: string;
+  /** Short name for the big work rows. */
+  name: string;
+  /** Mono label above the summary, e.g. "EUDR coffee traceability". */
+  category: string;
   tagline: string;
   summary: string; // 2–3 sentences for the home-page card
   /** One-line result, shown on the card and above the fold on the case study. */
@@ -25,6 +29,8 @@ export const projects: Project[] = [
   {
     slug: "chanzo",
     title: "Chanzo — EUDR coffee traceability",
+    name: "Chanzo",
+    category: "EUDR coffee traceability",
     outcome:
       "All 5 seeded fraud patterns caught; 3,501 plots screened in about four minutes",
     tagline:
@@ -121,6 +127,8 @@ export const projects: Project[] = [
   {
     slug: "smartbin",
     title: "SmartBin — Waste Collection Operations",
+    name: "SmartBin",
+    category: "Waste collection operations",
     outcome:
       "30–50% less collection distance across ~250 bins in two cities, with zero backend",
     tagline: "Live waste-collection operations for two cities — with zero backend.",
@@ -201,6 +209,8 @@ export const projects: Project[] = [
   {
     slug: "nairobi-incident-dashboard",
     title: "Nairobi Incident Dashboard",
+    name: "Nairobi Response",
+    category: "Emergency response analytics",
     outcome:
       "Response-time SLA visibility per sub-county, from raw logs to a live map and analytics in English and Swahili",
     tagline:
@@ -280,31 +290,39 @@ export interface Experience {
   stack: string[];
 }
 
-/** Most recent first. The first entry is treated as the current role. */
+/** Resume order: current role first. The first entry is treated as the current role. */
 export const experience: Experience[] = [
   {
     company: "Spiio",
     companyUrl: "https://greencastconnect.com/",
-    // TODO: confirm exact title and start date.
-    title: "Software Engineer",
-    period: "Present",
+    title: "Senior Frontend Engineer",
+    period: "May 2023 – Present",
     intro:
-      "I work on GreenCast Connect Desktop, a commercial B2B IoT platform that turns environmental sensor data into agronomic insights for golf courses and grounds teams.",
+      "Lead frontend engineer on GreenCast Connect, a production SaaS platform for 2,000+ users on web and mobile. I rebuilt the web app from scratch, spent over a year on the React Native app, own the architecture and conventions, and built the visualisation layer that turns sensor data into decisions.",
     bullets: [
-      "Build features across the platform's data-heavy surfaces: the sensor map, data explorer, growing-degree-day tracking, and alerting.",
-      "Ship in a production codebase serving customers in 5 languages, with Auth0, Sentry monitoring, and a Vitest + Playwright test suite.",
-      "Same domain as my personal projects — live sensor data, maps, and charts — but at commercial scale on Vercel.",
+      "Rebuilt the web app from scratch on Next.js (now Next.js 16 / React 19), replacing the original Redux app, and set the engineering standards: feature-based architecture, directory structure, testing and coding conventions.",
+      "Architected a shared library of 130+ reusable components used across the platform.",
+      "Spent over a year on the React Native mobile app, in both Expo and bare React Native, building it from scratch alongside the web platform so both clients share the same data model and conventions.",
+      "Designed and built the data-visualisation layer in Apache ECharts: 30+ custom charts, a drag-and-drop widget dashboard and a Data Explorer that turn raw sensor data into clear insight.",
+      "Built the interactive map dashboard on Google Maps and Places API (New), with marker clustering, location search and a map-first view of sites and sensors.",
+      "Built the testing and CI/CD setup: 400+ Vitest and Testing Library test files with coverage thresholds, Playwright end-to-end tests on every pull request via GitHub Actions, and Husky pre-commit gates.",
+      "Hardened frontend security (Auth0 on every page, bearer-token API requests, a nonce-based Content Security Policy, clickjacking protection) and set up Sentry alerting plus Smartlook and Google Analytics flow tracking.",
+      "Led a major API data-model migration to nested time-series structures; shipped i18n in 5 languages, new-user onboarding and an in-app product tour; set up Claude Code with shared conventions and an MCP integration for the team.",
     ],
     stack: [
-      "Next.js 14",
+      "Next.js 16",
+      "React 19",
       "TypeScript",
+      "React Native (Expo and bare)",
       "MUI",
       "Apache ECharts",
-      "Google Maps",
+      "Google Maps & Places API",
       "Auth0",
       "next-intl (5 locales)",
       "Sentry",
-      "Vitest + Playwright",
+      "Vitest + Testing Library",
+      "Playwright",
+      "GitHub Actions",
     ],
   },
   {
@@ -356,5 +374,55 @@ export const experience: Experience[] = [
     ],
   },
 ];
+
+export interface EarlierRole {
+  org: string;
+  /** Shown after the org name, e.g. a country. */
+  place?: string;
+  title: string;
+  period: string;
+  note: string;
+}
+
+/** Digital marketing & technology consulting, 2013–2019 — most recent first. */
+export const earlierCareer = {
+  period: "2013 – 2019",
+  title: "Digital marketing & technology consulting",
+  intro:
+    "Before engineering I spent six years on the business side: rolling out a core banking system, then running marketing, SEO and e-commerce for consumer brands in Kenya. It's why I start from the person using the interface and the decision they need to make.",
+  roles: [
+    {
+      org: "Sandstorm Kenya",
+      title: "Marketing Lead Consultant",
+      period: "2018 – 2019",
+      note: "Oversaw the Shopify e-commerce site for local and international markets, and all marketing.",
+    },
+    {
+      org: "EatOut Kenya",
+      title: "Digital Marketing Manager",
+      period: "2016",
+      note: "Led digital strategy for East Africa's largest online restaurant guide.",
+    },
+    {
+      org: "Jumia Food",
+      title: "Marketing Manager",
+      period: "2015 – 2016",
+      note: "Marketing strategy and budget, CRM, campaign tracking and a brand-ambassador acquisition programme.",
+    },
+    {
+      org: "MagicBox",
+      title: "Technical Director & Campaign Manager",
+      period: "2014 – 2015",
+      note: "Website structure, SEO, email and search-advertising strategy.",
+    },
+    {
+      org: "Vistaar Finance",
+      place: "India",
+      title: "Associate Consultant, Technology",
+      period: "2013 – 2014",
+      note: "Implemented a new core banking system: coordinated UAT, trained users across 90+ branches and migrated 35+ of them.",
+    },
+  ] satisfies EarlierRole[],
+};
 
 export const currentRole = experience[0];

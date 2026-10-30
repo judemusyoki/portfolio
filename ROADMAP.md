@@ -8,7 +8,7 @@ This file tracks the work that should make the site convert better for its two a
 
 The structure and design already match what well-regarded freelance developer sites do: a named specialism and availability in the hero, a "hire me" call to action above the fold, and full case studies instead of project thumbnails. The gap is **proof**. The site has no testimonials, no client or employer names outside the Experience section, and no measurable outcomes on the project cards, so it currently reads more like a job-seeker portfolio than a business site.
 
-Positioning decision, made 2026-09-21: keep the narrow headline ("data-heavy dashboards & geospatial visualization"). Show the wider range of work, from a simple marketing site to a layered platform, in the Services section rather than widening the hero.
+Positioning decision, made 2026-09-21 and revised 2026-10-29: lead as a senior frontend engineer (architecture, component systems, performance, testing), with data-driven products as the specialism and the marketing background as the reason the work starts from the user's decision. Services are framed as the frontend work Jude is hired for (data-driven interfaces, architecture & component systems, full builds, audits), not as a ladder of engagement sizes.
 
 ## Priorities
 
@@ -17,7 +17,7 @@ Ordered by expected impact. Items marked **needs Jude** require content or a dec
 ### 1. Social proof — needs Jude
 
 - [ ] Collect two or three short quotes (two sentences each, with name, title, company): Spiio manager, someone from Acter, and the WasteHero manager who wrote the recommendation letter.
-- [ ] Add a "Worked with" strip under the hero: Spiio, Acter, WasteHero, Safeex. Wordmarks only with permission; plain text otherwise.
+- [ ] Add a "Worked with" strip under the hero: Spiio, Acter, WasteHero. Wordmarks only with permission; plain text otherwise.
 - [ ] Place each quote next to the claim it supports (for example the Spiio quote beside the Spiio experience card), not in a separate testimonials block.
 
 ### 2. Outcomes on the project cards
@@ -52,6 +52,8 @@ Ordered by expected impact. Items marked **needs Jude** require content or a dec
 ### 7. Site as evidence — optional, later
 
 - [x] Hero visual beside the text on large screens (2026-09-22). Two variants exist: `components/HeroMap.tsx` (abstract street map with cluster bubbles) and `components/HeroPanel.tsx` (sparkline KPI tile). Pick one, or none, with `heroVisual` in `content/site.ts`; currently "map". Both are inline SVG, fixed data, CSS animation only, hidden below `lg` and from assistive tech.
+- [x] Motion redesign (2026-10-29): live contour-map hero (`components/ContourField.tsx`, canvas), scroll-linked Nairobi → Aarhus GPS readout in the header, sticky stacking project cards, card → case-study screenshot morph via React `<ViewTransition>`, ⌘K command palette, circular theme wipe, Null Island 404. Scroll effects are native CSS scroll-driven animations in `app/globals.css`, gated on `@supports` and `prefers-reduced-motion`. Replaces the HeroMap/HeroPanel variants and `ProjectCard`.
+- [x] Editorial redesign (2026-10-29), after the design language of aaftab.is-a.dev: dark-only near-black / warm-paper / orange palette, Geist only, numbered sections with a side rail (`components/SectionRail.tsx`), giant-name hero on a dot grid, work rows with an orange marquee hover (`components/WorkRows.tsx`), sticky big-number services (`components/ServicesShowcase.tsx`), huge tool marquees, reticle cursor (`components/TargetCursor.tsx`), full-screen mobile menu, giant footer wordmark. Our own copy throughout. Removed: contour canvas, GPS readout, stacking cards, theme toggle.
 
 ## Open questions
 

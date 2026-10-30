@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { secondaryButton } from "@/components/Buttons";
 
+/** Outline pill showing the address; clicking copies it. */
 export function CopyEmailButton({ email }: { email: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -16,13 +18,8 @@ export function CopyEmailButton({ email }: { email: string }) {
   }
 
   return (
-    <button
-      type="button"
-      onClick={copy}
-      className="rounded-md border border-border px-3 py-1.5 font-mono text-xs text-muted transition-colors hover:border-muted hover:text-foreground"
-      aria-live="polite"
-    >
-      {copied ? "Copied ✓" : "Copy email"}
+    <button type="button" onClick={copy} className={secondaryButton} aria-live="polite" title="Copy email address">
+      {copied ? "Copied to clipboard ✓" : email}
     </button>
   );
 }
