@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { site } from "@/content/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { CommandPalette } from "@/components/CommandPalette";
+import { ConsoleHello } from "@/components/ConsoleHello";
+import { ContactForm } from "@/components/ContactForm";
+import { SectionRail } from "@/components/SectionRail";
+import { TargetCursor } from "@/components/TargetCursor";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -33,8 +38,6 @@ export const metadata: Metadata = {
   },
 };
 
-const themeScript = `(function(){try{var t=localStorage.getItem("theme");var d=t?t==="dark":true;document.documentElement.classList.toggle("dark",d)}catch(e){document.documentElement.classList.add("dark")}})();`;
-
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -54,13 +57,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${geist.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        <meta name="color-scheme" content="dark light" />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <meta name="theme-color" content="#0b0b0c" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
@@ -69,15 +70,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-contrast"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-background"
         >
           Skip to content
         </a>
         <Header />
+        <SectionRail />
         <main id="main" className="flex-1">
           {children}
         </main>
         <Footer />
+        <CommandPalette />
+        <ContactForm />
+        <ConsoleHello />
+        <TargetCursor />
       </body>
     </html>
   );
