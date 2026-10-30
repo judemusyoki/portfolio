@@ -19,6 +19,10 @@ const SIGNS = [
  * to the bounds of whatever link or button is under it. Fine pointers only,
  * and off under reduced motion. Positions are written in a rAF loop, never
  * through React state.
+ *
+ * The root is a manual popover so it lives in the top layer: modal dialogs
+ * (contact form, palette, menu) render there and would otherwise cover it.
+ * Whenever a dialog opens, the popover is re-shown to put it back on top.
  */
 export function TargetCursor() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -32,6 +36,16 @@ export function TargetCursor() {
     const dot = root.querySelector<HTMLElement>("[data-dot]")!;
     const html = document.documentElement;
     html.classList.add("has-reticle");
+    const raise = () => {
+      if (root!.matches(":popover-open")) root!.hidePopover();
+      root!.showPopover();
+    };
+    raise();
+    // A newly opened dialog lands above us in the top layer; move back on top.
+    const dialogs = new MutationObserver((records) => {
+      if (records.some((r) => (r.target as HTMLDialogElement).open)) raise();
+    });
+    dialogs.observe(document.body, { subtree: true, attributes: true, attributeFilter: ["open"] });
 
     let x = -100;
     let y = -100;
@@ -101,6 +115,8 @@ export function TargetCursor() {
     html.addEventListener("pointerleave", onLeave);
     return () => {
       html.classList.remove("has-reticle");
+      dialogs.disconnect();
+      if (root.matches(":popover-open")) root.hidePopover();
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerover", onOver);
       html.removeEventListener("pointerleave", onLeave);
@@ -110,7 +126,12 @@ export function TargetCursor() {
 
   const arm = "absolute top-0 left-0 size-3 border-white will-change-transform";
   return (
-    <div ref={rootRef} aria-hidden="true" className="pointer-events-none fixed inset-0 z-[100] opacity-0 drop-shadow-[0_0_1.5px_rgb(0_0_0/0.7)] transition-opacity duration-300">
+    <div
+      ref={rootRef}
+      popover="manual"
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 m-0 size-auto overflow-visible border-0 bg-transparent p-0 opacity-0 drop-shadow-[0_0_1.5px_rgb(0_0_0/0.7)] transition-opacity duration-300"
+    >
       <span data-corner className={`${arm} origin-top-left border-t-[2.5px] border-l-[2.5px]`} />
       <span data-corner className={`${arm} -ml-3 origin-top-right border-t-[2.5px] border-r-[2.5px]`} />
       <span data-corner className={`${arm} -mt-3 -ml-3 origin-bottom-right border-r-[2.5px] border-b-[2.5px]`} />
