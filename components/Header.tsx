@@ -29,12 +29,13 @@ export function Header() {
           <ul className="flex items-center">
             {nav.map((item) => (
               <li key={item.href}>
-                <Link
+                {/* Plain anchors: next/link ignores a click on the hash already in the URL. */}
+                <a
                   href={item.href}
                   className="flex items-center gap-2 rounded-full px-4 py-1.5 text-sm transition-colors hover:text-accent-text aria-[current]:before:size-1.5 aria-[current]:before:rounded-full aria-[current]:before:bg-accent aria-[current]:before:content-['']"
                 >
                   {item.label}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

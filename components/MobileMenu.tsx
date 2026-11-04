@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
 import { nav, site } from "@/content/site";
 import type { CSSProperties } from "react";
 
@@ -47,7 +46,7 @@ export function MobileMenu() {
             <ol className="space-y-1">
               {nav.map((item, i) => (
                 <li key={item.href} className="overflow-hidden">
-                  <Link
+                  <a
                     href={item.href}
                     onClick={close}
                     className="menu-link inline-flex items-start gap-2 text-[clamp(2.75rem,13vw,4.5rem)] leading-[1.05] font-semibold tracking-[-0.045em]"
@@ -57,7 +56,7 @@ export function MobileMenu() {
                     <span className="mt-2 font-mono text-sm font-normal tracking-normal text-accent-text">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ol>

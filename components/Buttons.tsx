@@ -38,7 +38,9 @@ export function ArrowLink({ href, children, external = false }: { href: string; 
       <ArrowCircle external={external} />
     </>
   );
-  if (external || href.startsWith("mailto:")) {
+  // Plain anchors for same-page hashes: next/link does nothing when the hash
+  // is already in the URL, so a second click would not scroll.
+  if (external || href.startsWith("mailto:") || href.startsWith("#")) {
     return (
       <a href={href} className={className} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
         {content}

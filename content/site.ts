@@ -34,13 +34,17 @@ export const nav = [
 
 /** Section 02. Words wrapped in *asterisks* render in the accent colour. */
 export const statement =
-  "I’m Jude, a senior frontend engineer in Aarhus, originally from Nairobi. I lead the web and mobile frontend of a 2,000-user IoT platform at Spiio, and I like the problems where a UI has to make *complex, changing data* feel simple enough for someone to make a better decision.";
+  "I’m Jude, a senior frontend engineer in Aarhus, originally from Nairobi. I lead the web and mobile frontend of GreenCast Connect, a commercial IoT platform, at Spiio, and I like the problems where a UI has to make *complex, changing data* feel simple enough for someone to make a better decision.";
 
 /** Career numbers under the statement; every figure is from the resume. */
-export const stats = [
-  { value: 5, suffix: "+", label: "Years shipping production frontends" },
-  { value: 2000, suffix: "+", label: "Users on the platform I lead" },
-  { value: 3, suffix: "", label: "Products built end to end, data model to deployment" },
+export type StatIcon = "calendar" | "monitor" | "phone" | "briefcase" | "box";
+
+/** `icons`: one or more, shown side by side above the number. */
+export const stats: { value: number; suffix: string; label: string; icons: StatIcon[] }[] = [
+  { value: 5, suffix: "+", label: "Years shipping production frontends", icons: ["calendar"] },
+  { value: 3, suffix: "", label: "Engineering roles, from intern to lead", icons: ["briefcase"] },
+  { value: 2, suffix: "", label: "Platforms I currently ship for: web and mobile", icons: ["monitor", "phone"] },
+  { value: 6, suffix: "", label: "Products built end to end, data model to deployment", icons: ["box"] },
 ];
 
 /**
@@ -163,7 +167,7 @@ export const workflow = [
 export const focus = {
   title: "Right now: leading the frontend of *GreenCast Connect* at Spiio.",
   body: "I rebuilt the web app from scratch on Next.js and React 19, replacing the original Redux codebase, spent over a year building the React Native mobile app, and set the architecture, testing and coding standards the team works to. On top of the web app sits the visualisation layer: 30+ ECharts charts for sensor data across locations, time zones and measurement types, a Data Explorer, and a drag-and-drop widget dashboard with user-arranged layouts and persisted state — the closest thing I’ve built to an editor.",
-  since: "May 2023",
+  since: "March 2023",
 };
 
 /** Section "Why work with me". */

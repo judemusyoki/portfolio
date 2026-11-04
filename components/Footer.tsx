@@ -38,9 +38,9 @@ export function Footer() {
             <ul className="mt-5 space-y-3">
               {nav.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className={link}>
+                  <a href={item.href} className={link}>
                     {item.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
               {projects.map((project) => (

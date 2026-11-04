@@ -283,6 +283,10 @@ export const projects: Project[] = [
 export interface Experience {
   company: string;
   companyUrl?: string;
+  /** Public product links: the marketing site and the app-store listings. */
+  product?: { name: string; url: string; appStore?: string; googlePlay?: string };
+  /** Public source, when the work is open source. */
+  repo?: { url: string; label: string };
   title: string;
   period: string;
   intro: string;
@@ -295,10 +299,16 @@ export const experience: Experience[] = [
   {
     company: "Spiio",
     companyUrl: "https://greencastconnect.com/",
+    product: {
+      name: "GreenCast Connect",
+      url: "https://greencastconnect.com/",
+      appStore: "https://apps.apple.com/us/app/greencast-connect-by-syngenta/id6737599088",
+      googlePlay: "https://play.google.com/store/apps/details?id=com.gcx.live",
+    },
     title: "Senior Frontend Engineer",
-    period: "May 2023 – Present",
+    period: "Mar 2023 – Present",
     intro:
-      "Lead frontend engineer on GreenCast Connect, a production SaaS platform for 2,000+ users on web and mobile. I rebuilt the web app from scratch, spent over a year on the React Native app, own the architecture and conventions, and built the visualisation layer that turns sensor data into decisions.",
+      "Lead frontend engineer on GreenCast Connect, Syngenta’s turf-management platform built by Spiio, used daily by commercial customers across the industry on web and mobile. I rebuilt the web app from scratch, spent over a year on the React Native app, own the architecture and conventions, and built the visualisation layer that turns sensor data into decisions.",
     bullets: [
       "Rebuilt the web app from scratch on Next.js (now Next.js 16 / React 19), replacing the original Redux app, and set the engineering standards: feature-based architecture, directory structure, testing and coding conventions.",
       "Architected a shared library of 130+ reusable components used across the platform.",
@@ -327,12 +337,12 @@ export const experience: Experience[] = [
   },
   {
     company: "Acter",
-    // TODO: add the Acter website URL if you want the company name linked.
-    companyUrl: undefined,
+    companyUrl: "https://github.com/acterglobal",
+    repo: { url: "https://github.com/acterglobal/code", label: "Open source · 175 merged PRs" },
     title: "Full Stack Developer",
     period: "Apr 2021 – Dec 2022",
     intro:
-      "A web platform that helps organisations network, communicate and coordinate. I worked across the stack, from the Next.js front end to the GraphQL API and database layer.",
+      "An open-source community-organising platform from the Danish non-profit Acter Global, for grassroots groups, activists and NGOs. I worked across the stack, from the Next.js front end to the GraphQL API and database layer, and I’m the third-largest contributor to the codebase.",
     bullets: [
       "Built and optimised UI components in TypeScript, Next.js and Material-UI — the same front-end stack I work in today at Spiio.",
       "Developed and tuned the backend: a GraphQL server with a URQL client and Prisma ORM on PostgreSQL.",
