@@ -180,8 +180,7 @@ export const projects: Project[] = [
       "Vitest",
     ],
     links: {
-      // TODO: set once deployed to Vercel, e.g. https://smartbin-ops.vercel.app
-      demo: undefined,
+      demo: "https://bin-ops.vercel.app/copenhagen",
     },
     images: [
       {

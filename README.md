@@ -26,7 +26,7 @@ Screenshots live in `public/images/<project>/` as WebP.
 - [ ] Add `public/resume.pdf` and set `resumeUrl` in `content/site.ts`
 - [x] Confirm Spiio job title/start date in `content/projects.ts` (`experience`): Senior Frontend Engineer, May 2023
 - [ ] Add the Acter company URL in `content/projects.ts`, or leave it unlinked
-- [ ] Deploy SmartBin to Vercel and set its `links.demo` in `content/projects.ts`
+- [x] Deploy SmartBin to Vercel and set its `links.demo` in `content/projects.ts`
 - [x] Nairobi Dashboard overview screenshot in `public/images/nairobi/`
 - [ ] Capture more Nairobi views (FRS SLA chart, data explorer, Swahili) into `public/images/nairobi/` and list them in `content/projects.ts`
 
