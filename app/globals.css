@@ -294,10 +294,21 @@ html.has-reticle :is(input, textarea, [contenteditable]) {
    finished, static layout.
    ------------------------------------------------------------------ */
 
+/* Entering content sharpens rather than fades: it starts as a translucent,
+   frosted version of itself and settles as it scrolls into view. Keep the
+   opacity high so the pending state reads as "out of focus", not greyed out.
+   Only `filter`, `opacity` and `transform` animate, so it stays on the
+   compositor. */
 @keyframes reveal {
   from {
-    opacity: 0;
-    transform: translateY(2.5rem);
+    opacity: 0.6;
+    filter: blur(14px);
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
   }
 }
 @keyframes grow-x {
@@ -307,7 +318,12 @@ html.has-reticle :is(input, textarea, [contenteditable]) {
 }
 @keyframes word-light {
   from {
-    opacity: 0.2;
+    opacity: 0.55;
+    filter: blur(9px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
   }
 }
 @keyframes clip-up {
