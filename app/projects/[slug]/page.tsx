@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/content/projects";
 import { ProjectShot } from "@/components/ProjectShot";
+import { Lightbox, LightboxTrigger } from "@/components/Lightbox";
 import { CaseToc } from "@/components/CaseToc";
 import { Eyebrow } from "@/components/Section";
 import { ArrowIcon, primaryButton } from "@/components/Buttons";
@@ -64,8 +65,10 @@ export default async function ProjectPage({
   const hero = project.cardImage ?? project.images[0];
   const gallery = project.images.filter((image) => image.src !== hero?.src);
   const sections = gallery.length ? toc : toc.filter((t) => t.id !== "screens");
+  const shots = hero ? [hero, ...gallery] : gallery;
 
   return (
+    <Lightbox images={shots}>
     <article className="pb-32">
       <header id="top" data-section="Overview" className="relative isolate overflow-hidden pt-32 sm:pt-40">
         <div aria-hidden="true" className="dot-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_80%_70%_at_50%_0%,#000_30%,transparent_100%)]" />
@@ -104,7 +107,9 @@ export default async function ProjectPage({
       {hero && (
         <figure className="container-x mt-16">
           <div className="overflow-hidden rounded-3xl border border-border bg-surface">
-            <ProjectShot slug={project.slug} image={hero} eager sizes="(min-width: 1440px) 1328px, 100vw" className="w-full" />
+            <LightboxTrigger index={0}>
+              <ProjectShot slug={project.slug} image={hero} eager sizes="(min-width: 1440px) 1328px, 100vw" className="w-full" />
+            </LightboxTrigger>
           </div>
           {hero.caption && <figcaption className="mt-4 text-sm text-muted">{hero.caption}</figcaption>}
         </figure>
@@ -154,10 +159,12 @@ export default async function ProjectPage({
           {gallery.length > 0 && (
             <CaseSection id="screens" title="In the app">
               <div className="mt-10 space-y-16">
-                {gallery.map((image) => (
+                {gallery.map((image, i) => (
                   <figure key={image.src}>
                     <div className="clip-reveal overflow-hidden rounded-2xl border border-border bg-surface">
-                      <Image src={image.src} alt={image.alt} width={1600} height={1000} sizes="(min-width: 1024px) 896px, 100vw" />
+                      <LightboxTrigger index={i + 1}>
+                        <Image src={image.src} alt={image.alt} width={1600} height={1000} sizes="(min-width: 1024px) 896px, 100vw" />
+                      </LightboxTrigger>
                     </div>
                     {image.caption && <figcaption className="mt-4 text-sm text-muted">{image.caption}</figcaption>}
                   </figure>
@@ -206,5 +213,6 @@ export default async function ProjectPage({
         </nav>
       )}
     </article>
+    </Lightbox>
   );
 }

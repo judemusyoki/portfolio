@@ -188,6 +188,29 @@ summary::-webkit-details-marker {
   }
 }
 
+/* Screenshot lightbox: fades in, backdrop fades with it. */
+.lightbox {
+  transition:
+    opacity 0.25s,
+    overlay 0.25s allow-discrete,
+    display 0.25s allow-discrete;
+  opacity: 0;
+}
+.lightbox::backdrop {
+  transition: opacity 0.25s;
+  opacity: 0;
+}
+.lightbox[open],
+.lightbox[open]::backdrop {
+  opacity: 1;
+}
+@starting-style {
+  .lightbox[open],
+  .lightbox[open]::backdrop {
+    opacity: 0;
+  }
+}
+
 /* Section rail label: slides in whenever the section changes (it remounts
    per section, so the animation replays) and stays visible. */
 @keyframes rail-label {
@@ -278,11 +301,15 @@ summary::-webkit-details-marker {
   animation: drift 4s linear infinite;
 }
 
-/* Reticle cursor (see TargetCursor): hide the system pointer except where
-   you type. */
+/* Reticle cursor (see TargetCursor): the pointer becomes a small dot drawn by
+   the OS, so it never lags; the corners around it are the animated part.
+   Text fields keep the I-beam. */
 html.has-reticle,
 html.has-reticle * {
-  cursor: none;
+  cursor:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><circle cx='6' cy='6' r='2.6' fill='white' stroke='rgba(0,0,0,0.7)' stroke-width='1'/></svg>")
+      6 6,
+    auto;
 }
 html.has-reticle :is(input, textarea, [contenteditable]) {
   cursor: text;

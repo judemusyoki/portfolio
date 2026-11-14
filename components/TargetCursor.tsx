@@ -20,6 +20,11 @@ const SIGNS = [
  * and off under reduced motion. Positions are written in a rAF loop, never
  * through React state.
  *
+ * The pointer itself is not drawn here: anything moved from JavaScript trails
+ * the hardware cursor by at least a frame, so the dot is a CSS cursor image
+ * (see .has-reticle in globals.css) that the OS renders with no lag. Only the
+ * trailing corners are animated.
+ *
  * The root is a manual popover so it lives in the top layer: modal dialogs
  * (contact form, palette, menu) render there and would otherwise cover it.
  * Whenever a dialog opens, the popover is re-shown to put it back on top.
@@ -33,7 +38,6 @@ export function TargetCursor() {
     if (!root || !query.matches) return;
 
     const corners = [...root.querySelectorAll<HTMLElement>("[data-corner]")];
-    const dot = root.querySelector<HTMLElement>("[data-dot]")!;
     const html = document.documentElement;
     html.classList.add("has-reticle");
     const raise = () => {
@@ -74,13 +78,12 @@ export function TargetCursor() {
           gy = y + (sx * sin + sy * cos) * IDLE;
         }
         const point = current[i];
-        point.x += (gx - point.x) * 0.3;
-        point.y += (gy - point.y) * 0.3;
+        point.x += (gx - point.x) * 0.45;
+        point.y += (gy - point.y) * 0.45;
         // Rotate each L about its own outer corner, so the arms keep pointing
         // inward while the reticle spins.
         corners[i].style.transform = `translate3d(${point.x}px, ${point.y}px, 0) rotate(${locked ? 0 : angle}rad)`;
       });
-      dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       frame = requestAnimationFrame(tick);
     }
 
@@ -110,33 +113,35 @@ export function TargetCursor() {
       frame = 0;
     }
 
-    window.addEventListener("pointermove", onMove, { passive: true });
+    // pointerrawupdate fires before the frame's coalesced pointermove, so the
+    // corners aim at a fresher position where the browser offers it.
+    const moveEvent = "onpointerrawupdate" in window ? "pointerrawupdate" : "pointermove";
+    window.addEventListener(moveEvent, onMove as EventListener, { passive: true });
     document.addEventListener("pointerover", onOver, { passive: true });
     html.addEventListener("pointerleave", onLeave);
     return () => {
       html.classList.remove("has-reticle");
       dialogs.disconnect();
       if (root.matches(":popover-open")) root.hidePopover();
-      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener(moveEvent, onMove as EventListener);
       document.removeEventListener("pointerover", onOver);
       html.removeEventListener("pointerleave", onLeave);
       cancelAnimationFrame(frame);
     };
   }, []);
 
-  const arm = "absolute top-0 left-0 size-3 border-white will-change-transform";
+  const arm = "absolute top-0 left-0 size-3 border-white will-change-transform drop-shadow-[0_0_1.5px_rgb(0_0_0/0.7)]";
   return (
     <div
       ref={rootRef}
       popover="manual"
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 m-0 size-auto overflow-visible border-0 bg-transparent p-0 opacity-0 drop-shadow-[0_0_1.5px_rgb(0_0_0/0.7)] transition-opacity duration-300"
+      className="pointer-events-none fixed inset-0 m-0 size-auto overflow-visible border-0 bg-transparent p-0 opacity-0 transition-opacity duration-300"
     >
       <span data-corner className={`${arm} origin-top-left border-t-[2.5px] border-l-[2.5px]`} />
       <span data-corner className={`${arm} -ml-3 origin-top-right border-t-[2.5px] border-r-[2.5px]`} />
       <span data-corner className={`${arm} -mt-3 -ml-3 origin-bottom-right border-r-[2.5px] border-b-[2.5px]`} />
       <span data-corner className={`${arm} -mt-3 origin-bottom-left border-b-[2.5px] border-l-[2.5px]`} />
-      <span data-dot className="absolute top-0 left-0 -mt-[2px] -ml-[2px] size-1 rounded-full bg-white will-change-transform" />
     </div>
   );
 }
