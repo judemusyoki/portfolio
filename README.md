@@ -27,6 +27,8 @@ Screenshots live in `public/images/<project>/` as WebP.
 - [x] Confirm Spiio job title/start date in `content/projects.ts` (`experience`): Senior Frontend Engineer, May 2023
 - [ ] Add the Acter company URL in `content/projects.ts`, or leave it unlinked
 - [x] Deploy SmartBin to Vercel and set its `links.demo` in `content/projects.ts`
+- [x] Deploy Rebalance to Vercel and set its `links.demo` in `content/projects.ts`
+- [ ] Recapture `public/images/rebalance/` once the feed is live again (the current shots show the STALE indicator)
 - [x] Nairobi Dashboard overview screenshot in `public/images/nairobi/`
 - [ ] Capture more Nairobi views (FRS SLA chart, data explorer, Swahili) into `public/images/nairobi/` and list them in `content/projects.ts`
 
