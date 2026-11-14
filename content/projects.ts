@@ -36,7 +36,7 @@ export const projects: Project[] = [
     tagline:
       "Which hubs run empty in the next three hours, and the van route that prevents it — ranked by rentals lost, not model accuracy.",
     summary:
-      "A prototype of a consulting-grade operations tool for bike-share operators, built against Donkey Republic's live Aarhus system (471 virtual hubs, roughly 700 bikes) via GBFS 3.0 and Open-Meteo weather. It predicts which hubs will run empty in the next 1–3 hours, ranks them by the rentals lost if nobody acts, and generates van routes to prevent it. The hero screen is a worklist of interventions, not a map; the forecasting and routing are clearly labelled stand-ins designed to be swapped for a trained model and a solver.",
+      "A prototype of a consulting-grade operations tool for bike-share operators, built against Donkey Republic's live Aarhus system (471 virtual hubs, roughly 700 bikes) via GBFS 3.0 and Open-Meteo weather. It predicts which hubs will run empty in the next 1–3 hours, ranks them by the rentals lost if nobody acts, generates van routes to prevent it, and lets the visitor compose their own chart widgets on a dashboard. The hero screen is a worklist of interventions, not a map; the forecasting and routing are clearly labelled stand-ins designed to be swapped for a trained model and a solver.",
     problem: [
       "A bike-share operator loses a rental every time someone walks up to an empty hub. Rebalancing teams fix that by moving bikes around in vans, usually from a map and experience. With hundreds of hubs that breaks down: in Aarhus, Donkey Republic runs roughly 700 bikes across 471 virtual hubs, and more than half of those hubs are empty at any given moment. 'Will it be empty?' is true almost everywhere; the useful question is where an empty hub will actually cost rentals in the next few hours.",
       "Rebalance is a portfolio prototype of the tool a consultant would put in front of that team. It predicts which hubs run empty in the next 1–3 hours, ranks them by rentals lost if nobody acts, and generates van routes to prevent it. The success metric is that lost-rental number, not model accuracy. It runs on real live data — the Aarhus GBFS 3.0 feed polled every five minutes since August 2026, plus Open-Meteo weather — and is honest about what is a stand-in and what is not.",
@@ -69,6 +69,10 @@ export const projects: Project[] = [
         heading: "A dispatcher's console, in paper and in the dark",
         body: "The worklist shows a runway sparkline and minutes-to-empty per hub, opens a side sheet on click and has ⌘K hub search; a feed-freshness indicator and a weather strip sit on every page. Van routes are a full-screen map linked both ways to the plan panel, with a time-axis strip per van that shows when a delivery arrives after the hub has already emptied, and planner inputs that live in the URL. Light mode is a warm 'paper' theme; dark mode is a 'console' theme where the element that matters glows. Every figure is set in monospace tabular numerals.",
       },
+      {
+        heading: "A dashboard the visitor builds, saved in the browser",
+        body: "One dialog builds a widget: pick measurements, pick hubs or the whole system, pick a chart, tune it, with the real widget rendering at every change. Six chart types enable only when the series shape fits — stock bands need bikes on a single hub, compare needs one hub measurement on several hubs — so an impossible widget cannot be saved; the rules are unit-tested. The board lives in localStorage and in a share link that encodes it as base64url JSON, so the frontend keeps its read-only database role. 'Rentals at stake' had no history to chart, so a materialised view replays the current baseline over the last 90 days per hour — what today's profile would have said, not a backtest.",
+      },
     ],
     outcomes: [
       "Three months of live data: 5-minute polls of 471 Aarhus hubs since August 2026, ~4.6M snapshot rows, feed health recorded for every fetch",
@@ -76,6 +80,7 @@ export const projects: Project[] = [
       "Van routes on a full-screen map linked both ways to the plan panel, with a per-van time axis that flags deliveries arriving after the hub has emptied",
       "Hub detail: 7-day history continuing into the +3 h projection, hour-of-week heatmaps, nearest hubs with spare bikes",
       "A data-health page with a 90-day coverage strip that shows the gaps and says why they are there",
+      "A dashboard of chart widgets the visitor composes in one dialog with a live preview and arranges on a drag-and-resize grid, saved in the browser and shareable as a link",
       "Forecasting and routing shipped as labelled stand-ins behind stable interfaces, ready for a trained model and an OR-Tools solver",
     ],
     stack: [
@@ -84,6 +89,7 @@ export const projects: Project[] = [
       "MUI 9",
       "Leaflet 1.9 (imperative)",
       "Apache ECharts 6",
+      "react-grid-layout",
       "Supabase Postgres + PostGIS",
       "Drizzle ORM",
       "Cloudflare Workers (cron)",
@@ -98,15 +104,27 @@ export const projects: Project[] = [
     images: [
       {
         src: "/images/rebalance/worklist.webp",
-        alt: "Rebalance worklist: headline tiles for rentals at stake, bikes on hubs, empty hubs and last observation, a stale-feed warning, then hubs grouped into Soon, Watch and OK bands with a runway sparkline, minutes to empty, demand, risk, lost rentals and a Deliver or Collect action per row",
+        alt: "Rebalance worklist: headline tiles for rentals at stake, bikes on hubs, empty hubs and last observation, a stale-feed warning, then hubs grouped into Act now and Soon bands with a runway sparkline, minutes to empty, demand, risk, lost rentals and a Deliver action per row",
         caption:
           "The hero screen — hubs ranked by rentals lost in the next three hours, grouped by priority band. The red STALE indicator and the warning strip are the feed-freshness check, honest about a throttled ingester.",
       },
       {
         src: "/images/rebalance/routes.webp",
-        alt: "Rebalance van routes: a plan panel with van count, capacity, depot stock and horizon inputs, result tiles for rentals saved, bikes moved, driving and unmet, and a per-van timeline with one late stop, beside a full-screen dark map of Aarhus with the numbered route and a hovered stop's tooltip",
+        alt: "Rebalance van routes: a plan panel with van count, capacity, depot stock and horizon inputs, result tiles for rentals saved, bikes moved, driving and unmet, and a per-van timeline with late stops marked in red, beside a full-screen dark map of Aarhus with two numbered van routes, a legend and a hovered stop's tooltip",
         caption:
-          "Van routes — plan panel and map linked both ways; the timeline strip marks the stop where the van arrives after the hub has emptied, and the hovered stop is highlighted in both.",
+          "Van routes — plan panel and map linked both ways; the timeline strip marks the stops where the van arrives after the hub has emptied, and the hovered stop is highlighted in both.",
+      },
+      {
+        src: "/images/rebalance/dashboard.webp",
+        alt: "Rebalance dashboard: a board period toggle from 24h to 3M, a '4 widgets · saved in this browser' label, Share link, Reset and Add widget buttons, then a grid with an Empty hubs KPI tile and sparkline, a Rentals per hour by hub bar chart and two mixed-line charts of bikes against rain for Aarhus Central Station and Harbor Bath with shaded no-data bands, and quick-add chips below",
+        caption:
+          "The dashboard — three starter widgets and one the visitor added, bikes against rain on a second hub; the shaded bands are ingester gaps, left as gaps rather than drawn across.",
+      },
+      {
+        src: "/images/rebalance/builder.webp",
+        alt: "Rebalance Add widget dialog: measurement chips grouped by hubs, fleet, weather and operations with Bikes and Rain selected, a hub search with Aarhus Central Station ticked, a series list of two lines, chart cards with Mixed line selected, and on the right a live preview of bikes against rain over seven days above an auto-generated widget name",
+        caption:
+          "Add widget — the left side reveals itself step by step, the right side is the real widget rendering at the chosen size, and the name is auto-generated until edited.",
       },
       {
         src: "/images/rebalance/health.webp",
@@ -115,7 +133,7 @@ export const projects: Project[] = [
       },
       {
         src: "/images/rebalance/search.webp",
-        alt: "Rebalance ⌘K hub search open over the data-health page: hubs listed with their bike count and priority band, and go-to shortcuts for the worklist, van routes and data health",
+        alt: "Rebalance ⌘K hub search open over the data-health page: hubs listed with their bike count and priority band, and go-to shortcuts for the worklist, van routes and dashboard",
         caption: "⌘K on any page — find a hub by name or id, with its stock and priority, or jump between screens.",
       },
     ],
