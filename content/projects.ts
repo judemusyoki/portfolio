@@ -27,6 +27,100 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "rebalance",
+    title: "Rebalance — Bike-share rebalancing operations",
+    name: "Rebalance",
+    category: "Bike-share rebalancing operations",
+    outcome:
+      "A ranked worklist of the hubs about to run empty, from three months of live 5-minute data on 471 Aarhus hubs",
+    tagline:
+      "Which hubs run empty in the next three hours, and the van route that prevents it — ranked by rentals lost, not model accuracy.",
+    summary:
+      "A prototype of a consulting-grade operations tool for bike-share operators, built against Donkey Republic's live Aarhus system (471 virtual hubs, roughly 700 bikes) via GBFS 3.0 and Open-Meteo weather. It predicts which hubs will run empty in the next 1–3 hours, ranks them by the rentals lost if nobody acts, and generates van routes to prevent it. The hero screen is a worklist of interventions, not a map; the forecasting and routing are clearly labelled stand-ins designed to be swapped for a trained model and a solver.",
+    problem: [
+      "A bike-share operator loses a rental every time someone walks up to an empty hub. Rebalancing teams fix that by moving bikes around in vans, usually from a map and experience. With hundreds of hubs that breaks down: in Aarhus, Donkey Republic runs roughly 700 bikes across 471 virtual hubs, and more than half of those hubs are empty at any given moment. 'Will it be empty?' is true almost everywhere; the useful question is where an empty hub will actually cost rentals in the next few hours.",
+      "Rebalance is a portfolio prototype of the tool a consultant would put in front of that team. It predicts which hubs run empty in the next 1–3 hours, ranks them by rentals lost if nobody acts, and generates van routes to prevent it. The success metric is that lost-rental number, not model accuracy. It runs on real live data — the Aarhus GBFS 3.0 feed polled every five minutes since August 2026, plus Open-Meteo weather — and is honest about what is a stand-in and what is not.",
+    ],
+    role: [
+      "Solo design and build, end to end: the ingester (Cloudflare Workers on cron triggers, Drizzle ORM, Supabase Postgres with PostGIS), the analytics SQL, the routing planner and the Next.js frontend, deployed on Vercel with a read-only database role. No authentication, no rider-facing features, no trained ML model and no OR-Tools yet, no write path from the frontend — all stated as non-goals rather than left implied.",
+    ],
+    decisions: [
+      {
+        heading: "Rank by rentals lost, not by probability of empty",
+        body: "An hour-of-week demand profile per station — the last 8 weeks, van moves excluded, rates shrunk toward the hub average where data is thin — feeds a SQL baseline that projects each hub's stock at +1, +2 and +3 hours. Hubs are ranked by expected lost rentals, demand times stockout risk, so a busy hub with two bikes outranks a dormant one with none. The worklist groups the result into priority bands; most of the 471 hubs correctly fall into 'OK'.",
+      },
+      {
+        heading: "Frontend first, on stand-ins built to be replaced",
+        body: "The planned order was data, model, solver, then UI. It was flipped so the project was showable early: the frontend was built on a SQL baseline instead of a trained model and a greedy value-per-minute route planner in TypeScript instead of OR-Tools. Both are labelled as stand-ins in the UI, and both were designed around their interfaces — the risk view keeps its columns when a model replaces it, and the planner keeps its inputs and outputs when a solver does — so swapping them changes nothing downstream.",
+      },
+      {
+        heading: "A pipeline that assumes it will be audited",
+        body: "Polling every five minutes since August 2026 produces dense snapshots: one row per station per poll, about 135k rows a day, roughly 4.6 million over three months. Stations are stored as slowly-changing dimensions, feed health is recorded for every fetch, every payload is validated with Zod before anything touches a fact table, and weather rows are upserted so forecasts converge to actuals as they arrive. All bulk writes are chunked, after large inserts failed silently only on deployed Workers.",
+      },
+      {
+        heading: "Gaps that are explained, not hidden",
+        body: "Cloudflare's free Workers plan caps CPU at 10 ms per run; a poll needs about 120 ms. Cloudflare tolerates the overrun for stretches, then kills every run for hours. A killed run leaves no trace in the database — the isolate dies before the error handler runs, so the feed-health table stays green — which is why the gaps were only diagnosed from Cloudflare's invocation analytics. Rather than hide this, the data-health page carries a 90-day coverage strip, one cell per day against the 288 polls expected, and a note saying exactly why the empty stretches are there.",
+      },
+      {
+        heading: "Three concurrent queries, then silence",
+        body: "After the redesign, pages started streaming forever with no error anywhere. The cause was postgres.js 4.1.1: with more queries in flight than connections in the pool, it completes the first three and never dispatches the rest. The earlier pages had never issued more than three queries at once, so it went unnoticed. Reproduced in a standalone script outside Next.js, fixed by pinning 3.4.9.",
+      },
+      {
+        heading: "A dispatcher's console, in paper and in the dark",
+        body: "The worklist shows a runway sparkline and minutes-to-empty per hub, opens a side sheet on click and has ⌘K hub search; a feed-freshness indicator and a weather strip sit on every page. Van routes are a full-screen map linked both ways to the plan panel, with a time-axis strip per van that shows when a delivery arrives after the hub has already emptied, and planner inputs that live in the URL. Light mode is a warm 'paper' theme; dark mode is a 'console' theme where the element that matters glows. Every figure is set in monospace tabular numerals.",
+      },
+    ],
+    outcomes: [
+      "Three months of live data: 5-minute polls of 471 Aarhus hubs since August 2026, ~4.6M snapshot rows, feed health recorded for every fetch",
+      "A ranked worklist of interventions grouped by priority band, with a runway sparkline and minutes-to-empty per hub, a side sheet per hub and ⌘K search",
+      "Van routes on a full-screen map linked both ways to the plan panel, with a per-van time axis that flags deliveries arriving after the hub has emptied",
+      "Hub detail: 7-day history continuing into the +3 h projection, hour-of-week heatmaps, nearest hubs with spare bikes",
+      "A data-health page with a 90-day coverage strip that shows the gaps and says why they are there",
+      "Forecasting and routing shipped as labelled stand-ins behind stable interfaces, ready for a trained model and an OR-Tools solver",
+    ],
+    stack: [
+      "Next.js 16 (App Router, Cache Components)",
+      "TypeScript (strict)",
+      "MUI 9",
+      "Leaflet 1.9 (imperative)",
+      "Apache ECharts 6",
+      "Supabase Postgres + PostGIS",
+      "Drizzle ORM",
+      "Cloudflare Workers (cron)",
+      "GBFS 3.0 · Open-Meteo",
+      "Zod, Vitest",
+    ],
+    links: {
+      demo: "https://bike-rebalancing.vercel.app",
+      demoNote:
+        "Live data from Aarhus, read-only and without login. The feed polls every five minutes but is throttled on a free tier, so it may show as stale.",
+    },
+    images: [
+      {
+        src: "/images/rebalance/worklist.webp",
+        alt: "Rebalance worklist: headline tiles for rentals at stake, bikes on hubs, empty hubs and last observation, a stale-feed warning, then hubs grouped into Soon, Watch and OK bands with a runway sparkline, minutes to empty, demand, risk, lost rentals and a Deliver or Collect action per row",
+        caption:
+          "The hero screen — hubs ranked by rentals lost in the next three hours, grouped by priority band. The red STALE indicator and the warning strip are the feed-freshness check, honest about a throttled ingester.",
+      },
+      {
+        src: "/images/rebalance/routes.webp",
+        alt: "Rebalance van routes: a plan panel with van count, capacity, depot stock and horizon inputs, result tiles for rentals saved, bikes moved, driving and unmet, and a per-van timeline with one late stop, beside a full-screen dark map of Aarhus with the numbered route and a hovered stop's tooltip",
+        caption:
+          "Van routes — plan panel and map linked both ways; the timeline strip marks the stop where the van arrives after the hub has emptied, and the hovered stop is highlighted in both.",
+      },
+      {
+        src: "/images/rebalance/health.webp",
+        alt: "Rebalance data-health page: tiles for last successful poll, 7-day coverage, all-time coverage and snapshot rows, a note explaining the Cloudflare CPU-limit gaps, a 90-day strip of polls captured per day and a per-feed table of attempts, failures and latency",
+        caption: "Data health — a 90-day coverage strip that shows the gaps, and the note that explains them.",
+      },
+      {
+        src: "/images/rebalance/search.webp",
+        alt: "Rebalance ⌘K hub search open over the data-health page: hubs listed with their bike count and priority band, and go-to shortcuts for the worklist, van routes and data health",
+        caption: "⌘K on any page — find a hub by name or id, with its stock and priority, or jump between screens.",
+      },
+    ],
+  },
+  {
     slug: "chanzo",
     title: "Chanzo — EUDR coffee traceability",
     name: "Chanzo",
